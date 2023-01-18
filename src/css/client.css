@@ -141,7 +141,7 @@ ul {
     
     .excursions__item--prototype,
     .summary__item--prototype {
-        display: block;
+        display: none;
     }
     
     @media (min-width: 768px) {
@@ -158,9 +158,13 @@ ul {
         .panel__form {
             width: 50%;
         }
-    
+
+                .panel__excursions {
+                    min-width: 450px;
+                }
         .panel__form {
             margin: 0;
+            min-width: 450px;
         }
     }
     
