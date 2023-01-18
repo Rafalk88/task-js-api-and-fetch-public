@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack serve --open --mode development",
-    "build": "webpack --mode production"
+    "build": "webpack --mode production",
+    "db": "json-server --watch ./data/excursions.json"
   },
   "keywords": [],
   "author": "",
@@ -21,5 +22,8 @@
     "webpack": "^5.44.0",
     "webpack-cli": "^4.7.2",
     "webpack-dev-server": "^4.9.2"
+  },
+  "dependencies": {
+    "whatwg-fetch": "^3.6.2"
   }
 }
