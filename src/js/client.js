@@ -1,5 +1,19 @@
-import './../css/client.css';
+import Excursions from "./components/Excursion";
 
-import ExcursionsAPI from './ExcursionsAPI';
+import "./../css/client.css";
 
-console.log('client');
+const init = () => {
+  const orderEl = document.querySelector(".panel__form");
+  setOrderPrice(orderEl);
+
+  const excursions = new Excursions();
+  excursions.loadExcursions();
+};
+
+const setOrderPrice = (sectionEl, value = 0) => {
+  const summPrice = sectionEl.querySelector(".order__total-price-value");
+
+  summPrice.innerText = `${value} PLN`;
+};
+
+document.addEventListener("DOMContentLoaded", init);
