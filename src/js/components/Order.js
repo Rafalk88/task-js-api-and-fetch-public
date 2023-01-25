@@ -3,21 +3,55 @@ import { findEl } from "./helper";
 class Order {
   constructor(orderEl) {
     this.orderEl = orderEl;
+    this.formEl = findEl(".panel__order", { searchArea: orderEl });
     this.summEl = findEl(".panel__summary", { searchArea: orderEl });
     this.cart = [];
+
+    this.init();
   }
 
-  initEvents() {}
+  init() {
+    this.setOrderPrice();
+    this.initEvents();
+  }
+
+  initEvents() {
+    const excursionsForm = findEl(".panel__excursions");
+    const excursionsInputs = findEl(".excursions__field-input--submit", {
+      searchArea: excursionsForm,
+      items: true,
+    });
+
+    const orderInput = findEl(".order__field-submit", {
+      searchArea: this.formEl,
+    });
+
+    excursionsInputs.forEach((input) => {
+      input.addEventListener("click", (e) => {
+        e.preventDefault();
+        console.log("excursion działa");
+      });
+    });
+
+    orderInput.addEventListener("click", (e) => {
+      e.preventDefault();
+      console.log("order działa");
+    });
+  }
 
   setOrderPrice(value = 0) {
-    const summPrice = this.orderEl.querySelector(".order__total-price-value");
+    const summPrice = findEl(".order__total-price-value", {
+      searchArea: this.orderEl,
+    });
     summPrice.innerText = `${value} PLN`;
   }
 
   createProtoEl() {
-    return this.summEl
-      .querySelector(".summary__item--prototype")
-      .cloneNode(true);
+    const proto = findEl(".summary__item--prototype", {
+      searchArea: this.summEl,
+    });
+    proto.cloneNode(true);
+    return proto;
   }
 
   createAnOrder(data) {
