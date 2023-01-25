@@ -1,9 +1,13 @@
+import { findEl } from "./helper";
+
 class Order {
-  constructor() {
-    this.orderEl = document.querySelector(".panel__form");
-    this.summEl = document.querySelector(".panel__summary");
+  constructor(orderEl) {
+    this.orderEl = orderEl;
+    this.summEl = findEl(".panel__summary", { searchArea: orderEl });
     this.cart = [];
   }
+
+  initEvents() {}
 
   setOrderPrice(value = 0) {
     const summPrice = this.orderEl.querySelector(".order__total-price-value");

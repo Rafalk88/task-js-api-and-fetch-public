@@ -7,8 +7,8 @@ const init = () => {
   const excursions = new Excursions();
   excursions.loadExcursions();
 
-  const order = new Order();
-  order.setOrderPrice();
+  const orderEl = document.querySelector(".panel__form");
+  const order = new Order(orderEl);
 };
 
 document.addEventListener("DOMContentLoaded", init);
