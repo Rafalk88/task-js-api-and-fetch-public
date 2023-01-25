@@ -1,8 +1,9 @@
 import ExcursionsAPI from "./../ExcursionsAPI";
+import { findEl } from "./helper";
 
 class Excursions {
-  constructor() {
-    this.offersEl = document.querySelector(".panel__excursions");
+  constructor(offersEl) {
+    this.offersEl = offersEl;
     this.api = new ExcursionsAPI();
     this.dbExcursions = [];
   }
@@ -23,9 +24,11 @@ class Excursions {
   }
 
   createProtoEl() {
-    return this.offersEl
-      .querySelector(".excursions__item--prototype")
-      .cloneNode(true);
+    const proto = findEl(".excursions__item--prototype", {
+      searchArea: this.offersEl,
+    });
+    proto.cloneNode(true);
+    return proto;
   }
 
   createExcursionsList() {
@@ -44,11 +47,14 @@ class Excursions {
     const excursion = this.createProtoEl();
     excursion.classList.remove("excursions__item--prototype");
 
-    const title = excursion.querySelector(".excursions__title");
-    const description = excursion.querySelector(".excursions__description");
-    const [adultPrice, childrenPrice] = excursion.querySelectorAll(
-      ".excursions__field-name"
-    );
+    const title = findEl(".excursions__title", { searchArea: excursion });
+    const description = findEl(".excursions__description", {
+      searchArea: excursion,
+    });
+    const [adultPrice, childrenPrice] = findEl(".excursions__field-name", {
+      searchArea: excursion,
+      items: true,
+    });
 
     title.innerText = data.title;
     description.innerText = data.description;

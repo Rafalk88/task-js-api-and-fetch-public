@@ -5,7 +5,8 @@ import { findEl } from "./components/helper";
 import "./../css/client.css";
 
 const init = () => {
-  const excursions = new Excursions();
+  const offersEl = findEl(".panel__excursions");
+  const excursions = new Excursions(offersEl);
   excursions.loadExcursions();
 
   const orderEl = findEl(".panel__form");
