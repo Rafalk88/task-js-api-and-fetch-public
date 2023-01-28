@@ -1,22 +1,28 @@
 export const findEl = (selector, options = {}) => {
-  const {
-    searchArea = document, // querySelector search area
-    items = false, // querySelector or querySelectorAll
-    kinship = {
+  const defaults = {
+    searchArea: document, // querySelector search area
+    items: false, // querySelector or querySelectorAll
+    kinship: {
       element: null, // 'parent' or 'children'
       nthEl: 1, // which n-th element want to find
     },
-  } = options;
+  };
+
+  const actual = Object.assign({}, defaults, options);
 
   let searchEl;
 
-  if (!items) return (searchEl = searchArea.querySelector(selector));
-  if (items) return (searchEl = searchArea.querySelectorAll(selector));
-  if (!items && kinship) {
-    for (let i = 0; i < kinship.nthEl; i++) {
+  if (!actual.items)
+    return (searchEl = actual.searchArea.querySelector(selector));
+  if (actual.items)
+    return (searchEl = actual.searchArea.querySelectorAll(selector));
+  if (!actual.items && actual.kinship) {
+    for (let i = 0; i < actual.kinship.nthEl; i++) {
       if (!searchEl) return null;
-      if (kinship.element === "parent") searchEl = searchEl.parentElement;
-      if (kinship.element === "children") searchEl = searchEl.firstElementChild;
+      if (actual.kinship.element === "parent")
+        searchEl = searchEl.parentElement;
+      if (actual.kinship.element === "children")
+        searchEl = searchEl.firstElementChild;
     }
     return searchEl;
   }
