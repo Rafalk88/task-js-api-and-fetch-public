@@ -1,5 +1,5 @@
 import ExcursionsAPI from "./../ExcursionsAPI";
-import { findEl } from "./helper";
+import { findEl, duplicateEl } from "./helper";
 
 class Excursions {
   constructor(offersEl) {
@@ -23,14 +23,6 @@ class Excursions {
       .catch((err) => new Error(err));
   }
 
-  createProtoEl() {
-    const proto = findEl(".excursions__item--prototype", {
-      searchArea: this.offersEl,
-    });
-    proto.cloneNode(true);
-    return proto;
-  }
-
   createExcursionsList() {
     this.dbExcursions.forEach((item) => {
       const excursionEl = this.createExcursion(item);
@@ -40,11 +32,11 @@ class Excursions {
 
   clearExcursionsList() {
     this.offersEl.innerText = "";
-    this.offersEl.appendChild(this.createProtoEl());
+    this.offersEl.appendChild(duplicateEl(".excursions__item--prototype"));
   }
 
   createExcursion(data) {
-    const excursion = this.createProtoEl();
+    const excursion = duplicateEl(".excursions__item--prototype");
     excursion.classList.remove("excursions__item--prototype");
 
     const title = findEl(".excursions__title", { searchArea: excursion });

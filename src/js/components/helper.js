@@ -29,3 +29,10 @@ export const findEl = (selector, options = {}) => {
 
   return searchEl;
 };
+
+export const duplicateEl = (selector) => {
+  const protoEl = findEl(selector);
+  const duplicatedEl = protoEl.cloneNode(true);
+
+  return duplicatedEl;
+};
