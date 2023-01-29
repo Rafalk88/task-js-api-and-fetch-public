@@ -1,4 +1,4 @@
-import { findEl, duplicateEl } from "./helper";
+import { findEl, duplicateEl, numberFromString } from "./helper";
 
 class Order {
   constructor(orderEl) {
@@ -39,7 +39,7 @@ class Order {
 
     orderInput.addEventListener("click", (e) => {
       e.preventDefault();
-      console.log("order działa");
+      this.sendOrder(e);
     });
   }
 
@@ -48,7 +48,7 @@ class Order {
       searchArea: this.orderEl,
     });
     const elValue = summPrice.innerText;
-    const elValueNum = Number(elValue.match(/\d+/g));
+    const elValueNum = numberFromString(elValue);
     let endValue;
 
     if (operator === "inc") endValue = elValueNum + value;
@@ -70,14 +70,17 @@ class Order {
       items: true,
     });
 
+    // TODO
+    // input validator here
+
     const adultQuantity = adult.lastElementChild.value;
     const childQuantity = child.lastElementChild.value;
 
     const adultPrice = adult.firstChild.textContent;
-    const adultPriceNum = adultPrice.match(/\d+/g);
+    const adultPriceNum = numberFromString(adultPrice);
 
     const childPrice = child.firstChild.textContent;
-    const childPriceNum = childPrice.match(/\d+/g);
+    const childPriceNum = numberFromString(childPrice);
 
     const totalPrice =
       adultQuantity * adultPriceNum + childQuantity * childPriceNum;
@@ -87,8 +90,8 @@ class Order {
 
     return {
       title: title.textContent,
-      adultPrice: Number(adultPriceNum[0]),
-      childPrice: Number(childPriceNum[0]),
+      adultPrice: adultPriceNum,
+      childPrice: childPriceNum,
       adultQuantity: adultQuantity,
       childQuantity: childQuantity,
       totalPrice: totalPrice,
@@ -136,6 +139,20 @@ class Order {
     // TODO
     // on this line pop date from this.cart
     parent.remove();
+  }
+
+  sendOrder(e) {
+    const name = findEl();
+    const email = findEl();
+    const date = new Date().toLocaleDateString();
+    const time = new Date().toLocaleTimeString();
+
+    // TODO
+    // input validator here
+
+    // create object with consts and car
+
+    // push object to /orders using API
   }
 }
 

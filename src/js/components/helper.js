@@ -36,3 +36,9 @@ export const duplicateEl = (selector, isDeep = false) => {
 
   return duplicatedEl;
 };
+
+export const numberFromString = (string) => {
+  const number = Number(string.match(/\d+/g));
+
+  return number;
+};
