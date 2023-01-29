@@ -1,4 +1,4 @@
-import { findEl } from "./helper";
+import { findEl, duplicateEl } from "./helper";
 
 class Order {
   constructor(orderEl) {
@@ -6,8 +6,6 @@ class Order {
     this.formEl = findEl(".panel__order", { searchArea: orderEl });
     this.summEl = findEl(".panel__summary", { searchArea: orderEl });
     this.cart = [];
-
-    this.init();
   }
 
   init() {
@@ -26,10 +24,16 @@ class Order {
       searchArea: this.formEl,
     });
 
-    excursionsInputs.forEach((input) => {
-      input.addEventListener("click", (e) => {
-        this.makeOrder(e);
-      });
+    excursionsInputs.forEach((input, i) => {
+      if (i > 0) {
+        input.addEventListener("click", (e) => {
+          e.preventDefault();
+          //const orderData = this.prepareOrderData(e);
+          //this.cart.push(orderData);
+          //const order = this.createAnOrder(orderData);
+          //this.summEl.appendChild(order);
+        });
+      }
     });
 
     orderInput.addEventListener("click", (e) => {
@@ -38,27 +42,11 @@ class Order {
     });
   }
 
-  makeOrder(e) {
-    e.preventDefault();
-    const orderData = this.prepareOrderData(e);
-    this.cart.push(orderData);
-    const order = this.createAnOrder(orderData);
-    this.summEl.appendChild(order);
-  }
-
   setOrderPrice(value = 0) {
     const summPrice = findEl(".order__total-price-value", {
       searchArea: this.orderEl,
     });
     summPrice.innerText = `${value} PLN`;
-  }
-
-  createProtoEl() {
-    const proto = findEl(".summary__item--prototype", {
-      searchArea: this.summEl,
-    });
-    proto.cloneNode(true);
-    return proto;
   }
 
   prepareOrderData(e) {
@@ -96,7 +84,7 @@ class Order {
   }
 
   createAnOrder(data = {}) {
-    const orderEl = this.createProtoEl();
+    const orderEl = duplicateEl("summary__item--prototype", true);
     orderEl.classList.remove("summary__item--prototype");
 
     const title = findEl(".summary__name", {

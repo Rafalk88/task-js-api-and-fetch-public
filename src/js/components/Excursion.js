@@ -8,13 +8,8 @@ class Excursions {
     this.dbExcursions = [];
   }
 
-  render() {
-    this.clearExcursionsList();
-    this.createExcursionsList();
-  }
-
-  loadExcursions() {
-    this.api
+  async loadExcursions() {
+    return this.api
       .loadExcursions()
       .then((data) => {
         this.dbExcursions = this.dbExcursions.concat(data);
@@ -32,11 +27,13 @@ class Excursions {
 
   clearExcursionsList() {
     this.offersEl.innerText = "";
-    this.offersEl.appendChild(duplicateEl(".excursions__item--prototype"));
+    this.offersEl.appendChild(
+      duplicateEl(".excursions__item--prototype", true)
+    );
   }
 
   createExcursion(data) {
-    const excursion = duplicateEl(".excursions__item--prototype");
+    const excursion = duplicateEl(".excursions__item--prototype", true);
     excursion.classList.remove("excursions__item--prototype");
 
     const title = findEl(".excursions__title", { searchArea: excursion });

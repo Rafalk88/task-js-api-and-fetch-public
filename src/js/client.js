@@ -7,10 +7,11 @@ import "./../css/client.css";
 const init = () => {
   const offersEl = findEl(".panel__excursions");
   const excursions = new Excursions(offersEl);
-  excursions.loadExcursions();
 
   const orderEl = findEl(".panel__form");
   const order = new Order(orderEl);
+
+  excursions.loadExcursions().then(() => order.init());
 };
 
 document.addEventListener("DOMContentLoaded", init);
