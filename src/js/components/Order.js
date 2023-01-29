@@ -9,7 +9,7 @@ class Order {
   }
 
   init() {
-    this.setOrderPrice();
+    this.setOrderPrice("reset");
     this.initEvents();
   }
 
@@ -28,10 +28,11 @@ class Order {
       if (i > 0) {
         input.addEventListener("click", (e) => {
           e.preventDefault();
-          //const orderData = this.prepareOrderData(e);
-          //this.cart.push(orderData);
-          //const order = this.createAnOrder(orderData);
-          //this.summEl.appendChild(order);
+          const orderData = this.prepareOrderData(e);
+          this.cart.push(orderData);
+          const order = this.createAnOrder(orderData);
+          this.setOrderPrice(orderData.totalPrice, "inc");
+          this.summEl.appendChild(order);
         });
       }
     });
@@ -42,11 +43,19 @@ class Order {
     });
   }
 
-  setOrderPrice(value = 0) {
+  setOrderPrice(value = 0, operator) {
     const summPrice = findEl(".order__total-price-value", {
       searchArea: this.orderEl,
     });
-    summPrice.innerText = `${value} PLN`;
+    const elValue = summPrice.innerText;
+    const elValueNum = Number(elValue.match(/\d+/g));
+    let endValue;
+
+    if (operator === "inc") endValue = elValueNum + value;
+    if (operator === "dec") endValue = elValueNum - value;
+    if (value === "reset") endValue = 0;
+
+    summPrice.innerText = `${endValue} PLN`;
   }
 
   prepareOrderData(e) {
@@ -73,6 +82,9 @@ class Order {
     const totalPrice =
       adultQuantity * adultPriceNum + childQuantity * childPriceNum;
 
+    adult.lastElementChild.value = "";
+    child.lastElementChild.value = "";
+
     return {
       title: title.textContent,
       adultPrice: Number(adultPriceNum[0]),
@@ -84,7 +96,7 @@ class Order {
   }
 
   createAnOrder(data = {}) {
-    const orderEl = duplicateEl("summary__item--prototype", true);
+    const orderEl = duplicateEl(".summary__item--prototype", true);
     orderEl.classList.remove("summary__item--prototype");
 
     const title = findEl(".summary__name", {
@@ -96,12 +108,34 @@ class Order {
     const summaryPrices = findEl(".summary__prices", {
       searchArea: orderEl,
     });
+    const deleteBtn = findEl(".summary__btn-remove", {
+      searchArea: orderEl,
+    });
 
     title.innerText = data.title;
     totalPrice.innerText = `${data.totalPrice} PLN`;
     summaryPrices.innerText = `dorośli: ${data.adultQuantity} x ${data.adultPrice} PLN, dzieci: ${data.childQuantity} x ${data.childPrice} PLN`;
 
+    deleteBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      this.deleteOrder(e);
+    });
+
     return orderEl;
+  }
+
+  deleteOrder(e) {
+    const parent = e.target.parentElement.parentElement;
+    const price = findEl(".summary__total-price", {
+      searchArea: parent,
+    });
+
+    const priceValue = price.innerText;
+    const priceValueNum = Number(priceValue.match(/\d+/g));
+    this.setOrderPrice(priceValueNum, "dec");
+    // TODO
+    // on this line pop date from this.cart
+    parent.remove();
   }
 }
 
