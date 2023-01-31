@@ -29,6 +29,7 @@ class Order {
       if (i > 0) {
         input.addEventListener("click", (e) => {
           e.preventDefault();
+          this.errors = [];
           this.validateExcursionInputs(e);
           if (this.errors.length === 0) {
             const orderData = this.prepareOrderData(e);
@@ -44,7 +45,9 @@ class Order {
 
     orderInput.addEventListener("click", (e) => {
       e.preventDefault();
-      this.sendOrder(e);
+      this.errors = [];
+      this.validateOrderInputs(e);
+      if (this.errors.length === 0) this.sendOrder(e);
     });
   }
 
@@ -64,7 +67,6 @@ class Order {
   }
 
   validateExcursionInputs(e) {
-    this.errors = [];
     const actualSearchArea = e.target.parentElement.parentElement.parentElement;
 
     const inputs = findEl(".excursions__field-name", {
@@ -75,8 +77,38 @@ class Order {
     inputs.forEach((input) => {
       validate(input.firstElementChild, {
         errorsStorage: this.errors,
-        message: "Podana wartość nie jest liczbą.",
+        message: "Invalid number.",
         pattern: /^[0-9]*$/,
+      });
+    });
+  }
+
+  validateOrderInputs(e) {
+    const inputs = findEl(".order__field-name", {
+      searchArea: this.formEl,
+      items: true,
+    });
+
+    inputs.forEach((input) => {
+      const inputAttr = input.firstElementChild.getAttribute("name");
+      let message;
+      let pattern;
+
+      if (inputAttr === "name") {
+        message = "Invalid format. Only letters and space.";
+        pattern = /^[A-Za-z\s]*$/;
+      }
+      if (inputAttr === "email") {
+        message = "Invalid format [email_name]@[domain].[enlargement]";
+        pattern =
+          /(?:[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/;
+      }
+
+      validate(input.firstElementChild, {
+        type: "string",
+        errorsStorage: this.errors,
+        message: message,
+        pattern: pattern,
       });
     });
   }
@@ -170,7 +202,6 @@ class Order {
     const time = new Date().toLocaleTimeString();
 
     // TODO
-    // input validator here
 
     // create object with consts and car
 

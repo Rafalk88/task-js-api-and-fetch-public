@@ -45,16 +45,17 @@ export const numberFromString = (string) => {
 
 export const validate = (input, options = {}) => {
   const defaults = {
+    type: "number",
     errorsStorage: [],
     message: "",
     pattern: /^[a-zA-Z0-9]*$/,
   };
   const actual = Object.assign({}, defaults, options);
 
-  const value = input.value;
+  let value = input.value;
   const storage = actual.errorsStorage;
   const message = actual.message;
-  const emptyMessage = "To pole jest wymagane";
+  const emptyMessage = "Field is required.";
 
   const createErrorField = (input, text) => {
     const textEl = document.createElement("div");
@@ -76,13 +77,15 @@ export const validate = (input, options = {}) => {
   };
 
   deleteErrorField(input);
-
   if (value === "") {
     createErrorField(input, emptyMessage);
     storage.push(emptyMessage);
     return;
   } else {
-    if (!actual.pattern.test(Number(value))) {
+    if (actual.type === "number") value = Number(value);
+    if (actual.type === "string") value = value;
+
+    if (!actual.pattern.test(value)) {
       createErrorField(input, message);
       storage.push(message);
       return;
