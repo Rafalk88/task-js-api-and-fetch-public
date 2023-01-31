@@ -42,3 +42,43 @@ export const numberFromString = (string) => {
 
   return number;
 };
+
+export const validate = (input, options = {}) => {
+  const defaults = {
+    toValidate: "quantity", // 'quantity', 'name', 'email'
+    error: {
+      message: [""],
+      storage: null,
+    },
+  };
+  const actual = Object.assign({}, defaults, options);
+
+  const value = input.value;
+
+  switch (actual.toValidate) {
+    case "quantity":
+      if (Number(value) !== NaN && value !== "" && value !== null) {
+        return;
+      } else {
+        const textEl = document.createElement("div");
+
+        textEl.innerText = actual.error.message;
+        textEl.classList.add("input_error");
+        input.classList.add("input_error");
+        if (actual.error.storage)
+          actual.error.storage.push(actual.error.message[0]);
+
+        input.parentElement.appendChild(textEl);
+      }
+      break;
+
+    case "name":
+      break;
+
+    case "email":
+      break;
+
+    default:
+      break;
+  }
+};
