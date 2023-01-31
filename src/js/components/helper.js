@@ -45,40 +45,49 @@ export const numberFromString = (string) => {
 
 export const validate = (input, options = {}) => {
   const defaults = {
-    toValidate: "quantity", // 'quantity', 'name', 'email'
-    error: {
-      message: [""],
-      storage: null,
-    },
+    errorsStorage: [],
+    message: "",
+    pattern: /^[a-zA-Z0-9]*$/,
   };
   const actual = Object.assign({}, defaults, options);
 
   const value = input.value;
+  const storage = actual.errorsStorage;
+  const message = actual.message;
+  const emptyMessage = "To pole jest wymagane";
 
-  switch (actual.toValidate) {
-    case "quantity":
-      if (Number(value) !== NaN && value !== "" && value !== null) {
-        return;
-      } else {
-        const textEl = document.createElement("div");
+  const createErrorField = (input, text) => {
+    const textEl = document.createElement("div");
 
-        textEl.innerText = actual.error.message;
-        textEl.classList.add("input_error");
-        input.classList.add("input_error");
-        if (actual.error.storage)
-          actual.error.storage.push(actual.error.message[0]);
+    textEl.innerText = text;
+    textEl.classList.add("input_error");
+    input.classList.add("input_error");
 
-        input.parentElement.appendChild(textEl);
-      }
-      break;
+    input.parentElement.appendChild(textEl);
+  };
 
-    case "name":
-      break;
+  const deleteErrorField = (input) => {
+    const errorEl = input.nextElementSibling;
 
-    case "email":
-      break;
+    if (errorEl) {
+      input.classList.remove("input_error");
+      errorEl.remove();
+    }
+  };
 
-    default:
-      break;
+  deleteErrorField(input);
+
+  if (value === "") {
+    createErrorField(input, emptyMessage);
+    storage.push(emptyMessage);
+    return;
+  } else {
+    if (!actual.pattern.test(Number(value))) {
+      createErrorField(input, message);
+      storage.push(message);
+      return;
+    } else {
+      if (storage.length > 0) deleteErrorField(input);
+    }
   }
 };

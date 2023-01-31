@@ -143,7 +143,11 @@ ul {
     .summary__item--prototype {
         display: none;
     }
-    
+
+.input_error {
+    color: red;
+    border-color: red;
+}
     @media (min-width: 768px) {
         body {
             display: flex;

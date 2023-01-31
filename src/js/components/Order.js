@@ -1,4 +1,4 @@
-import { findEl, duplicateEl, numberFromString } from "./helper";
+import { findEl, duplicateEl, numberFromString, validate } from "./helper";
 
 class Order {
   constructor(orderEl) {
@@ -6,6 +6,7 @@ class Order {
     this.formEl = findEl(".panel__order", { searchArea: orderEl });
     this.summEl = findEl(".panel__summary", { searchArea: orderEl });
     this.cart = [];
+    this.errors = [];
   }
 
   init() {
@@ -28,11 +29,15 @@ class Order {
       if (i > 0) {
         input.addEventListener("click", (e) => {
           e.preventDefault();
-          const orderData = this.prepareOrderData(e);
-          this.cart.push(orderData);
-          const order = this.createAnOrder(orderData);
-          this.setOrderPrice(orderData.totalPrice, "inc");
-          this.summEl.appendChild(order);
+          this.validateExcursionInputs(e);
+          if (this.errors.length === 0) {
+            const orderData = this.prepareOrderData(e);
+            const order = this.createAnOrder(orderData);
+
+            this.cart.push(orderData);
+            this.setOrderPrice(orderData.totalPrice, "inc");
+            this.summEl.appendChild(order);
+          }
         });
       }
     });
@@ -58,6 +63,24 @@ class Order {
     summPrice.innerText = `${endValue} PLN`;
   }
 
+  validateExcursionInputs(e) {
+    this.errors = [];
+    const actualSearchArea = e.target.parentElement.parentElement.parentElement;
+
+    const inputs = findEl(".excursions__field-name", {
+      searchArea: actualSearchArea,
+      items: true,
+    });
+
+    inputs.forEach((input) => {
+      validate(input.firstElementChild, {
+        errorsStorage: this.errors,
+        message: "Podana wartość nie jest liczbą.",
+        pattern: /^[0-9]*$/,
+      });
+    });
+  }
+
   prepareOrderData(e) {
     const actualSearchArea = e.target.parentElement.parentElement.parentElement;
 
@@ -69,9 +92,6 @@ class Order {
       searchArea: actualSearchArea,
       items: true,
     });
-
-    // TODO
-    // input validator here
 
     const adultQuantity = adult.lastElementChild.value;
     const childQuantity = child.lastElementChild.value;
@@ -142,8 +162,10 @@ class Order {
   }
 
   sendOrder(e) {
-    const name = findEl();
-    const email = findEl();
+    const [name, email] = findEl(".order__field-input", {
+      searchArea: this.formEl,
+      items: true,
+    });
     const date = new Date().toLocaleDateString();
     const time = new Date().toLocaleTimeString();
 
