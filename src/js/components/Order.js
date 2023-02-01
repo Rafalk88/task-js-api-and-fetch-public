@@ -31,6 +31,7 @@ class Order {
           e.preventDefault();
           this.errors = [];
           this.validateExcursionInputs(e);
+
           if (this.errors.length === 0) {
             const orderData = this.prepareOrderData(e);
             const order = this.createAnOrder(orderData);
@@ -69,47 +70,51 @@ class Order {
   validateExcursionInputs(e) {
     const actualSearchArea = e.target.parentElement.parentElement.parentElement;
 
-    const inputs = findEl(".excursions__field-name", {
+    const inputs = findEl(".excursions__field-input", {
       searchArea: actualSearchArea,
       items: true,
     });
 
     inputs.forEach((input) => {
-      validate(input.firstElementChild, {
-        errorsStorage: this.errors,
-        message: "Invalid number.",
-        pattern: /^[0-9]*$/,
-      });
+      if (input.getAttribute("type") !== "submit") {
+        validate(input, {
+          errorsStorage: this.errors,
+          message: "Invalid number.",
+          pattern: /^[0-9]*$/,
+        });
+      }
     });
   }
 
   validateOrderInputs(e) {
-    const inputs = findEl(".order__field-name", {
+    const inputs = findEl(".order__field-input", {
       searchArea: this.formEl,
       items: true,
     });
 
     inputs.forEach((input) => {
-      const inputAttr = input.firstElementChild.getAttribute("name");
-      let message;
-      let pattern;
+      if (input.getAttribute("type") !== "submit") {
+        const inputAttr = input.getAttribute("name");
+        let message;
+        let pattern;
 
-      if (inputAttr === "name") {
-        message = "Invalid format. Only letters and space.";
-        pattern = /^[A-Za-z\s]*$/;
-      }
-      if (inputAttr === "email") {
-        message = "Invalid format [email_name]@[domain].[enlargement]";
-        pattern =
-          /(?:[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/;
-      }
+        if (inputAttr === "name") {
+          message = "Invalid format. Only letters and space.";
+          pattern = /^[A-Za-z\s]*$/;
+        }
+        if (inputAttr === "email") {
+          message = "Invalid format [email_name]@[domain].[enlargement]";
+          pattern =
+            /(?:[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/;
+        }
 
-      validate(input.firstElementChild, {
-        type: "string",
-        errorsStorage: this.errors,
-        message: message,
-        pattern: pattern,
-      });
+        validate(input, {
+          type: "string",
+          errorsStorage: this.errors,
+          message: message,
+          pattern: pattern,
+        });
+      }
     });
   }
 
@@ -120,25 +125,30 @@ class Order {
       searchArea: actualSearchArea,
     });
 
-    const [adult, child] = findEl(".excursions__field-name", {
+    const [adult, child] = findEl(".excursions__field-input", {
       searchArea: actualSearchArea,
       items: true,
     });
 
-    const adultQuantity = adult.lastElementChild.value;
-    const childQuantity = child.lastElementChild.value;
+    const [adultPrice, childPrice] = findEl(".excursions__field-name", {
+      searchArea: actualSearchArea,
+      items: true,
+    });
 
-    const adultPrice = adult.firstChild.textContent;
-    const adultPriceNum = numberFromString(adultPrice);
+    const adultQuantity = adult.value;
+    const childQuantity = child.value;
 
-    const childPrice = child.firstChild.textContent;
-    const childPriceNum = numberFromString(childPrice);
+    const adultPriceValue = adultPrice.textContent;
+    const adultPriceNum = numberFromString(adultPriceValue);
+
+    const childPriceValue = childPrice.textContent;
+    const childPriceNum = numberFromString(childPriceValue);
 
     const totalPrice =
       adultQuantity * adultPriceNum + childQuantity * childPriceNum;
 
-    adult.lastElementChild.value = "";
-    child.lastElementChild.value = "";
+    adult.value = "";
+    child.value = "";
 
     return {
       title: title.textContent,
