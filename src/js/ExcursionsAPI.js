@@ -7,6 +7,10 @@ class ExcursionsAPI {
     this.urlOrders = `${this.URL}/orders`;
   }
 
+  loadExcursions() {
+    return this._fetch();
+  }
+
   _fetch(additionalPath = "") {
     const url = this.urlExcursions + additionalPath;
     return fetchPolyfill(url).then((resp) => {
@@ -17,9 +21,15 @@ class ExcursionsAPI {
     });
   }
 
-  loadExcursions() {
-    return this._fetch();
-  }
+  addExcurion() {}
+
+  updateExcursion() {}
+
+  removeExcursion() {}
+
+  addOrder() {}
+
+  removeOrder() {}
 }
 
 export default ExcursionsAPI;
