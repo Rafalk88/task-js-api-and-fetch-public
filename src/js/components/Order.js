@@ -206,10 +206,11 @@ class Order {
   }
 
   sendOrder() {
-    const [inputName, inputEmail] = findEl(".order__field-input", {
+    const inputs = findEl(".order__field-input", {
       searchArea: this.formEl,
       items: true,
     });
+    const [inputName, inputEmail] = inputs;
     const date = new Date().toLocaleDateString();
     const time = new Date().toLocaleTimeString();
     const name = inputName.value;
@@ -228,7 +229,26 @@ class Order {
       cart: this.cart,
     };
 
+    const proto = duplicateEl(".summary__item--prototype", true)
+    this.clearOrderData(inputs, proto)
+
     this.api.addOrder(order);
+  }
+
+  clearOrderData(inputs, proto) {
+    inputs.forEach((input => {
+      if (input.getAttribute("type") !== "submit") {
+        input.value = "";
+      }
+    }))
+    this.cart = [];
+    this.setOrderPrice('reset')
+    this.clearOrderList(proto)
+  }
+
+  clearOrderList(proto) {
+    this.summEl.innerText = "";
+    this.summEl.appendChild(proto);
   }
 }
 
