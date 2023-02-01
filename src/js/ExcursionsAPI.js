@@ -11,9 +11,9 @@ class ExcursionsAPI {
     return this._fetch();
   }
 
-  _fetch(additionalPath = "") {
+  _fetch(additionalPath = "", options = {}) {
     const url = this.urlExcursions + additionalPath;
-    return fetchPolyfill(url).then((resp) => {
+    return fetchPolyfill(url, options).then((resp) => {
       if (resp.ok) {
         return resp.json();
       }
@@ -27,9 +27,20 @@ class ExcursionsAPI {
 
   removeExcursion() {}
 
-  addOrder() {}
+  addOrder(data) {
+    const options = {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: { "Content-Type": "application/json" },
+    };
 
-  removeOrder() {}
+    return fetchPolyfill(this.urlOrders, options).then((resp) => {
+      if (resp.ok) {
+        return resp.json();
+      }
+      return Promise.reject(resp);
+    });
+  }
 }
 
 export default ExcursionsAPI;

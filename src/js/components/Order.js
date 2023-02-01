@@ -1,4 +1,5 @@
 import { findEl, duplicateEl, numberFromString, validate } from "./helper";
+import ExcursionsAPI from "./../ExcursionsAPI";
 
 class Order {
   constructor(orderEl) {
@@ -7,6 +8,7 @@ class Order {
     this.summEl = findEl(".panel__summary", { searchArea: orderEl });
     this.cart = [];
     this.errors = [];
+    this.api = new ExcursionsAPI();
   }
 
   init() {
@@ -217,9 +219,6 @@ class Order {
     });
     const totalPriceValue = numberFromString(totalPrice.textContent);
 
-    // TODO
-    // push object to /orders using API
-
     const order = {
       name: name,
       email: email,
@@ -228,6 +227,8 @@ class Order {
       time: time,
       cart: this.cart,
     };
+
+    this.api.addOrder(order);
   }
 }
 
