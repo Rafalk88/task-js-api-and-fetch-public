@@ -48,7 +48,7 @@ class Order {
       e.preventDefault();
       this.errors = [];
       this.validateOrderInputs(e);
-      if (this.errors.length === 0) this.sendOrder(e);
+      if (this.errors.length === 0) this.sendOrder();
     });
   }
 
@@ -203,19 +203,31 @@ class Order {
     parent.remove();
   }
 
-  sendOrder(e) {
-    const [name, email] = findEl(".order__field-input", {
+  sendOrder() {
+    const [inputName, inputEmail] = findEl(".order__field-input", {
       searchArea: this.formEl,
       items: true,
     });
     const date = new Date().toLocaleDateString();
     const time = new Date().toLocaleTimeString();
+    const name = inputName.value;
+    const email = inputEmail.value;
+    const totalPrice = findEl(".order__total-price-value", {
+      searchArea: this.formEl,
+    });
+    const totalPriceValue = numberFromString(totalPrice.textContent);
 
     // TODO
-
-    // create object with consts and car
-
     // push object to /orders using API
+
+    const order = {
+      name: name,
+      email: email,
+      totalPrice: totalPriceValue,
+      date: date,
+      time: time,
+      cart: this.cart,
+    };
   }
 }
 
