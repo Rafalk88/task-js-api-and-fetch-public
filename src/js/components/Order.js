@@ -1,4 +1,10 @@
 import { findEl, duplicateEl, numberFromString, validate } from "./helper";
+import {
+  VALIDATE_INPUT_AS_NUMBER,
+  VALIDATE_NAME,
+  VALIDATE_EMAIL,
+} from "./../constants";
+import { ONLY_NUMBER_REG, NAME_REG, EMAIL_REG } from "./../regexs";
 import ExcursionsAPI from "./../ExcursionsAPI";
 
 class Order {
@@ -31,27 +37,35 @@ class Order {
       if (i > 0) {
         input.addEventListener("click", (e) => {
           e.preventDefault();
-          this.errors = [];
-          this.validateExcursionInputs(e);
-
-          if (this.errors.length === 0) {
-            const orderData = this.prepareOrderData(e);
-            const order = this.createAnOrder(orderData);
-
-            this.cart.push(orderData);
-            this.setOrderPrice(orderData.totalPrice, "inc");
-            this.summEl.appendChild(order);
-          }
+          this.excursionEvent(e);
         });
       }
     });
 
     orderInput.addEventListener("click", (e) => {
       e.preventDefault();
-      this.errors = [];
-      this.validateOrderInputs(e);
-      if (this.errors.length === 0) this.sendOrder();
+      this.orderEvent();
     });
+  }
+
+  excursionEvent(e) {
+    this.errors = [];
+    this.validateExcursionInputs(e);
+
+    if (this.errors.length === 0) {
+      const orderData = this.prepareOrderData(e);
+      const order = this.createAnOrder(orderData);
+
+      this.cart.push(orderData);
+      this.setOrderPrice(orderData.totalPrice, "inc");
+      this.summEl.appendChild(order);
+    }
+  }
+
+  orderEvent() {
+    this.errors = [];
+    this.validateOrderInputs(e);
+    if (this.errors.length === 0) this.sendOrder();
   }
 
   setOrderPrice(value = 0, operator) {
@@ -81,14 +95,14 @@ class Order {
       if (input.getAttribute("type") !== "submit") {
         validate(input, {
           errorsStorage: this.errors,
-          message: "Invalid number.",
-          pattern: /^[0-9]*$/,
+          message: VALIDATE_INPUT_AS_NUMBER,
+          pattern: ONLY_NUMBER_REG,
         });
       }
     });
   }
 
-  validateOrderInputs(e) {
+  validateOrderInputs() {
     const inputs = findEl(".order__field-input", {
       searchArea: this.formEl,
       items: true,
@@ -101,13 +115,12 @@ class Order {
         let pattern;
 
         if (inputAttr === "name") {
-          message = "Invalid format. Only letters and space.";
-          pattern = /^[A-Za-z\s]*$/;
+          message = VALIDATE_NAME;
+          pattern = NAME_REG;
         }
         if (inputAttr === "email") {
-          message = "Invalid format [email_name]@[domain].[enlargement]";
-          pattern =
-            /(?:[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/;
+          message = VALIDATE_EMAIL;
+          pattern = EMAIL_REG;
         }
 
         validate(input, {
@@ -163,8 +176,9 @@ class Order {
   }
 
   createAnOrder(data = {}) {
-    const orderEl = duplicateEl(".summary__item--prototype", true);
-    orderEl.classList.remove("summary__item--prototype");
+    const protoEl = "summary__item--prototype";
+    const orderEl = duplicateEl(`.${protoEl}`, true);
+    orderEl.classList.remove(`${protoEl}`);
 
     const title = findEl(".summary__name", {
       searchArea: orderEl,
@@ -229,21 +243,21 @@ class Order {
       cart: this.cart,
     };
 
-    const proto = duplicateEl(".summary__item--prototype", true)
-    this.clearOrderData(inputs, proto)
+    const proto = duplicateEl(".summary__item--prototype", true);
+    this.clearOrderData(inputs, proto);
 
     this.api.addOrder(order);
   }
 
   clearOrderData(inputs, proto) {
-    inputs.forEach((input => {
+    inputs.forEach((input) => {
       if (input.getAttribute("type") !== "submit") {
         input.value = "";
       }
-    }))
+    });
     this.cart = [];
-    this.setOrderPrice('reset')
-    this.clearOrderList(proto)
+    this.setOrderPrice("reset");
+    this.clearOrderList(proto);
   }
 
   clearOrderList(proto) {
