@@ -1,4 +1,26 @@
 {
-  "excursions": [],
+  "excursions": [
+    {
+      "title": "",
+      "description": "",
+      "adultPrice": 0,
+      "childrenPrice": 0,
+      "id": 1
+    },
+    {
+      "title": "",
+      "description": "",
+      "adultPrice": 0,
+      "childrenPrice": 0,
+      "id": 2
+    },
+    {
+      "title": "",
+      "description": "",
+      "adultPrice": 0,
+      "childrenPrice": 0,
+      "id": 3
+    }
+  ],
   "orders": []
 }

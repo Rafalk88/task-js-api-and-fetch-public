@@ -13,6 +13,7 @@ class Excursions {
       .loadExcursions()
       .then((data) => {
         this.dbExcursions = data;
+        this.clearExcursionsList();
         this.createExcursionsList();
       })
       .catch((err) => new Error(err));
@@ -28,7 +29,7 @@ class Excursions {
   createExcursion(data) {
     const excursion = duplicateEl(".excursions__item--prototype", true);
     excursion.classList.remove("excursions__item--prototype");
-    excursion.dataset.id = data.id
+    excursion.dataset.id = data.id;
 
     const title = findEl(".excursions__title", { searchArea: excursion });
     const description = findEl(".excursions__description", {
@@ -45,6 +46,12 @@ class Excursions {
     childrenPrice.firstChild.data = `Dziecko: ${data.childrenPrice} PLN x`;
 
     return excursion;
+  }
+
+  clearExcursionsList() {
+    const proto = duplicateEl(".excursions__item--prototype", true);
+    this.offersEl.innerText = "";
+    this.offersEl.appendChild(proto);
   }
 }
 

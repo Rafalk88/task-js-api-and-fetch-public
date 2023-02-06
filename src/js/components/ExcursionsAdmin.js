@@ -13,23 +13,29 @@ export class ExcursionsAdmin extends Excursions {
     };
   }
 
-  initEvents() {
+  init() {
     const excursionsForm = this.panelEl.firstElementChild;
     excursionsForm.addEventListener("submit", (e) => {
       e.preventDefault();
       this.addExcursion();
     });
+  }
 
+  initEvents() {
     const deleteBtns = findEl(".excursions__field-input--remove", {
       searchArea: this.offersEl,
       items: true,
     });
-    console.log(deleteBtns);
-  }
-
-  removeEvents(tableOfEvents = []) {
-    tableOfEvents.forEach((myEvent) => {
-      myEvent.removeEventListener();
+    deleteBtns.forEach((btn, i) => {
+      if (i > 0) {
+        const elementId = Number(
+          btn.parentElement.parentElement.parentElement.dataset.id
+        );
+        btn.addEventListener("click", (e) => {
+          e.preventDefault();
+          this.deleteExcursion(elementId);
+        });
+      }
     });
   }
 
@@ -47,18 +53,21 @@ export class ExcursionsAdmin extends Excursions {
       if (input.name === "child")
         this.excursion.childrenPrice = Number(input.value);
     });
-
     this.api
       .addExcurion(this.excursion)
-      .then(() => this.clearData())
-      .then(() => this.clearInputData(inputs))
-      .then(() => this.clearExcursionsList())
-      .then(() => this.loadExcursions());
+      .then(() => {
+        this.clearData();
+        this.clearInputData(inputs);
+        this.loadExcursions();
+      })
+      .then(() => this.initEvents());
   }
 
   editExcursion() {}
 
-  deleteExcursion(id) {}
+  deleteExcursion(id) {
+    this.api.removeExcursion(id).then(() => this.loadExcursions());
+  }
 
   clearData() {
     return (this.excursion = {
@@ -73,12 +82,6 @@ export class ExcursionsAdmin extends Excursions {
     inputs.forEach((input) => {
       input.value = "";
     });
-  }
-
-  clearExcursionsList() {
-    const proto = duplicateEl(".excursions__item--prototype", true);
-    this.offersEl.innerText = "";
-    this.offersEl.appendChild(proto);
   }
 }
 

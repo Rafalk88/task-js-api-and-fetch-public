@@ -38,7 +38,10 @@ class ExcursionsAPI {
 
   updateExcursion() {}
 
-  removeExcursion() {}
+  removeExcursion(id) {
+    const options = { method: "DELETE" };
+    return this._fetch(`/${id}`, options);
+  }
 
   addOrder(data) {
     const options = {
