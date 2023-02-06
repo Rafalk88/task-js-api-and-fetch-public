@@ -19,6 +19,18 @@ export class ExcursionsAdmin extends Excursions {
       e.preventDefault();
       this.addExcursion();
     });
+
+    const deleteBtns = findEl(".excursions__field-input--remove", {
+      searchArea: this.offersEl,
+      items: true,
+    });
+    console.log(deleteBtns);
+  }
+
+  removeEvents(tableOfEvents = []) {
+    tableOfEvents.forEach((myEvent) => {
+      myEvent.removeEventListener();
+    });
   }
 
   addExcursion() {
@@ -46,7 +58,7 @@ export class ExcursionsAdmin extends Excursions {
 
   editExcursion() {}
 
-  deleteExcursion() {}
+  deleteExcursion(id) {}
 
   clearData() {
     return (this.excursion = {
