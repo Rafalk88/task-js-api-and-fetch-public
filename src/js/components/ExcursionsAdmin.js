@@ -1,5 +1,5 @@
 import Excursions from "./Excursions";
-import { findEl } from "./helper";
+import { findEl, duplicateEl } from "./helper";
 
 export class ExcursionsAdmin extends Excursions {
   constructor(offersEl) {
@@ -12,8 +12,13 @@ export class ExcursionsAdmin extends Excursions {
       childrenPrice: 0,
     };
   }
+
   initEvents() {
-    this.addExcursion();
+    const excursionsForm = this.panelEl.firstElementChild;
+    excursionsForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      this.addExcursion();
+    });
   }
 
   addExcursion() {
@@ -30,8 +35,13 @@ export class ExcursionsAdmin extends Excursions {
       if (input.name === "child")
         this.excursion.childrenPrice = Number(input.value);
     });
-    this.api.addExcurion(this.excursion);
-    this.clearData();
+
+    this.api
+      .addExcurion(this.excursion)
+      .then(() => this.clearData())
+      .then(() => this.clearInputData(inputs))
+      .then(() => this.clearExcursionsList())
+      .then(() => this.loadExcursions());
   }
 
   editExcursion() {}
@@ -45,6 +55,18 @@ export class ExcursionsAdmin extends Excursions {
       adultPrice: 0,
       childrenPrice: 0,
     });
+  }
+
+  clearInputData(inputs) {
+    inputs.forEach((input) => {
+      input.value = "";
+    });
+  }
+
+  clearExcursionsList() {
+    const proto = duplicateEl(".excursions__item--prototype", true);
+    this.offersEl.innerText = "";
+    this.offersEl.appendChild(proto);
   }
 }
 

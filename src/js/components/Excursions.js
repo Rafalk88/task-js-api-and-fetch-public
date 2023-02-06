@@ -12,7 +12,7 @@ class Excursions {
     return this.api
       .loadExcursions()
       .then((data) => {
-        this.dbExcursions = this.dbExcursions.concat(data);
+        this.dbExcursions = data;
         this.createExcursionsList();
       })
       .catch((err) => new Error(err));
@@ -25,16 +25,10 @@ class Excursions {
     });
   }
 
-  clearExcursionsList() {
-    this.offersEl.innerText = "";
-    this.offersEl.appendChild(
-      duplicateEl(".excursions__item--prototype", true)
-    );
-  }
-
   createExcursion(data) {
     const excursion = duplicateEl(".excursions__item--prototype", true);
     excursion.classList.remove("excursions__item--prototype");
+    excursion.dataset.id = data.id
 
     const title = findEl(".excursions__title", { searchArea: excursion });
     const description = findEl(".excursions__description", {
