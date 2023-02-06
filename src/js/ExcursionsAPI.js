@@ -21,7 +21,20 @@ class ExcursionsAPI {
     });
   }
 
-  addExcurion() {}
+  addExcurion(data) {
+    const options = {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: { "Content-Type": "application/json" },
+    };
+
+    return fetchPolyfill(this.urlExcursions, options).then((resp) => {
+      if (resp.ok) {
+        return resp.json();
+      }
+      return Promise.reject(resp);
+    });
+  }
 
   updateExcursion() {}
 

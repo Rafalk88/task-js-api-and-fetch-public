@@ -44,9 +44,6 @@ class Excursions {
       searchArea: excursion,
       items: true,
     });
-    console.dir(adultPrice.firstChild.data);
-    //adultPrice.innerText = "";
-    //childrenPrice.innerText = "";
 
     title.innerText = data.title;
     description.innerText = data.description;
