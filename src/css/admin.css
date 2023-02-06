@@ -2,12 +2,23 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: sans-serif;
+    }
+    
+    body {
+        width: 100vw;
+        height: 100vh;
 }
 
 ul {
     list-style: none;
 }
 
+.panel__title {
+    display: flex;
+    justify-content: center;
+    padding: 1rem 0;
+}
 .panel {
     display: flex;
     margin: 0 auto;
@@ -15,7 +26,7 @@ ul {
     padding: 30px 0;
 }
 
-.panel__excursins {
+.panel__excursions {
     width: 70%;
 }
 
@@ -24,21 +35,112 @@ ul {
     flex-wrap: wrap;
 }
 
-.excurions__item {
+.excursions__item {
     border: 1px solid #bbb;
     border-radius: 5px;
     margin: 10px;
     padding: 20px;
     width: calc(50% - 20px);
+    display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    
+    .excursions__header {
+        margin-bottom: .875rem;
+    }
+    
+    .excursions__field:last-child {
+        margin-top: 1.5rem;
+    }
+    
+    .excursions__title {
+        font-size: 1.8rem;
+        display: flex;
+        justify-content: center;
+        margin: .875rem 0;
 }
 
+.excursions__description {
+    font-size: 1.2rem;
+    text-align: justify;
+}
+
+.excursions__field {
+    margin: .875rem 0;
+}
+
+.excursions__field-name {
+    font-size: 1.2rem;
+}
+
+.excursions__field-price {
+    font-size: 1.6rem;
+}
+
+.excursions__field--submit {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.btn {
+    width: 130px;
+    height: 40px;
+    cursor: pointer;
+    font-size: 1.275rem;
+    border-radius: 6px;
+    border: 1px solid;
+    font-weight: bold;
+    padding: 6px 24px;
+    text-decoration: none;
+}
+
+.excursions__field-input--update {
+    background: linear-gradient(to bottom, #f0c911 5%, #f2ab1e 100%);
+    background-color: #f0c911;
+    border-color: #e65f44;
+    color: #c92200;
+    text-shadow: 0px 1px 0px #ded17c;
+    box-shadow: inset 0px 1px 0px 0px #f9eca0;
+}
+
+.excursions__field-input--update:hover {
+    background: linear-gradient(to bottom, #f2ab1e 5%, #f0c911 100%);
+    background-color: #f2ab1e;
+}
+
+.excursions__field-input--update:active {
+    position: relative;
+    top: 1px;
+}
+
+.excursions__field-input--remove {
+    box-shadow: inset 0px 1px 0px 0px #f5978e;
+    background: linear-gradient(to bottom, #f24537 5%, #c62d1f 100%);
+    background-color: #f24537;
+    border-color: #d02718;
+    color: #ffffff;
+    text-shadow: 0px 1px 0px #810e05;
+}
+
+.excursions__field-input--remove:hover {
+    background: linear-gradient(to bottom, #c62d1f 5%, #f24537 100%);
+    background-color: #c62d1f;
+}
+
+.excursions__field-input--remove:active {
+    position: relative;
+    top: 1px;
+}
+
+.excursions__item--prototype {}
 .panel__form {
     background-color: #f4f4f4;
     padding: 20px;
     width: 30%;
 }
 
-.uploader, .order {
+.order {
     border-bottom: 1px solid #bbb;
     margin-bottom: 20px;
     padding-bottom: 20px;
@@ -46,8 +148,31 @@ ul {
 
 .form__field {
     display: block;
+    width: 100%;
+        height: 35px;
+        margin: .5rem 0;
+        border: 1px solid rgba(0, 0, 0, 0.25);
+        border-radius: 4px;
 }
 
 .form__field--longtext {
     height: 100px;
+}
+.order__field-submit {
+    box-shadow: inset 0px 1px 3px 0px #91b8b3;
+    background: linear-gradient(to bottom, #768d87 5%, #6c7c7c 100%);
+    background-color: #768d87;
+    border-color: #566963;
+    color: #ffffff;
+    text-shadow: 0px -1px 0px #2b665e;
+}
+
+.order__field-submit:hover {
+    background: linear-gradient(to bottom, #6c7c7c 5%, #768d87 100%);
+    background-color: #6c7c7c;
+}
+
+.order__field-submit:active {
+    position: relative;
+    top: 1px;
 }

@@ -7,7 +7,7 @@
     <title>JavaScript: API oraz FETCH - admin, devmentor.pl</title>
 </head>
 <body>
-    <h1>Panel administratora</h1>
+    <h1 class="panel__title">Panel administratora</h1>
     <section class="panel">
         <ul class="panel__excursions excursions">
             <li data-id="1" class="excursions__item excursions__item--prototype">
@@ -18,31 +18,31 @@
                 <form class="excursions__form">
                     <div class="excursions__field">
                         <label class="excursions__field-name">
-                            Dorosły: <strong>99</strong>PLN
+                            Dorosły: <strong class="excursions__field-price">99</strong>PLN
                         </label>
                     </div>
                     <div class="excursions__field">
                         <label class="excursions__field-name">
-                            Dziecko: <strong>50</strong>PLN
+                            Dziecko: <strong class="excursions__field-price">50</strong>PLN
                         </label>
                     </div>
                     <div class="excursions__field excursions__field--submit">
                         <input 
-                            class="excursions__field-input excursions__field-input--update" 
-                            value="edytuj"
+                            class="btn excursions__field-input excursions__field-input--update" 
+                            value="Edytuj"
                             type="submit"
                         />
                         <input 
-                            class="excursions__field-input excursions__field-input--remove" 
-                            value="usuń"
+                            class="btn excursions__field-input excursions__field-input--remove" 
+                            value="Usuń"
                             type="submit"
                         />
                     </div>
                 </form>
             </li>
         </ul>
-        <section>
-            <form class="form" novalidate>
+        <section class="panel__form">
+            <form class="form order" novalidate>
                 <div class="form__row">
                     <label class="form__label">
                         Nazwa:<input class="form__field" name="name" />
@@ -60,13 +60,13 @@
                 </div>
                 <div class="form__row">
                     <label class="form__label">
-                        Cena dziecko:<input class="order__form__field" type="number" name="name" />
+                        Cena dziecko:<input class="form__field" type="number" name="name" />
                     </label>
                 </div>
                 <div class="order__field order__field--submit">
                     <input 
-                        class="order__field-input order__field-submit" 
-                        value="dodaj"
+                        class="btn order__field-input order__field-submit" 
+                        value="Dodaj"
                         type="submit"
                     />
                 </div>
