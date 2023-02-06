@@ -1,4 +1,4 @@
-import ExcursionsAPI from "./../ExcursionsAPI";
+import ExcursionsAPI from "../ExcursionsAPI";
 import { findEl, duplicateEl } from "./helper";
 
 class Excursions {
@@ -44,6 +44,9 @@ class Excursions {
       searchArea: excursion,
       items: true,
     });
+    console.dir(adultPrice.firstChild.data);
+    //adultPrice.innerText = "";
+    //childrenPrice.innerText = "";
 
     title.innerText = data.title;
     description.innerText = data.description;

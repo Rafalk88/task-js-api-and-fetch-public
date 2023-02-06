@@ -1,5 +1,12 @@
-import './../css/admin.css';
+import ExcursionsAdmin from "./components/ExcursionsAdmin";
+import { findEl } from "./components/helper";
+import "./../css/admin.css";
 
-import ExcursionsAPI from './ExcursionsAPI';
+const init = () => {
+  const excursionsEl = findEl(".panel__excursions");
+  const excursions = new ExcursionsAdmin(excursionsEl);
 
-console.log('admin');
+  excursions.loadExcursions();
+};
+
+document.addEventListener("DOMContentLoaded", init);

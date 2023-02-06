@@ -1,4 +1,4 @@
-import Excursions from "./components/Excursion";
+import Excursions from "./components/Excursions";
 import Order from "./components/Order";
 import { findEl } from "./components/helper";
 

@@ -133,7 +133,9 @@ ul {
     top: 1px;
 }
 
-.excursions__item--prototype {}
+.excursions__item--prototype {
+    display: none;
+}
 .panel__form {
     background-color: #f4f4f4;
     padding: 20px;
